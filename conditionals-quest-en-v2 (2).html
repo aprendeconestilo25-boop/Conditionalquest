@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Conditionals Quest</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#1d4ed8;--navy:#14246b;--yel:#ffc933;--mint:#16a58a;--red:#e8493a;--bg:#eef4ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--navy);font:500 19px/1.5 'Baloo 2','Trebuchet MS',Verdana,sans-serif}
+header{background:var(--blue);color:#fff;padding:8px 14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5}
+main{max-width:860px;margin:0 auto;padding:16px}
+button{font:inherit;min-height:48px;min-width:48px;border:0;border-radius:14px;padding:8px 18px;cursor:pointer;background:var(--yel);color:var(--navy);font-weight:700;box-shadow:0 3px 0 #c79a00}
+button:hover{filter:brightness(1.06)}button:focus-visible,input:focus-visible{outline:4px solid var(--navy);outline-offset:2px}
+button.b2{background:#fff;box-shadow:0 3px 0 #b9c6ee}header button{min-height:44px;padding:4px 12px}
+.card{background:#fff;border-radius:22px;padding:18px;margin:14px 0;box-shadow:0 4px 0 #cfdcfb}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.lc{text-align:left;background:#fff;box-shadow:0 4px 0 #cfdcfb;border-radius:22px;padding:16px;min-height:150px;display:block;width:100%}
+.lc[disabled]{opacity:.5;cursor:not-allowed}.big{font-size:56px;line-height:1}
+.bar{height:12px;background:#dfe8ff;border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--mint)}
+.if{background:#dbe7ff;color:#1b3aa8;padding:1px 8px;border-radius:9px}.mc{background:#fff0c2;color:#7a4b00;padding:1px 8px;border-radius:9px}
+.warn{background:#ffe3df;border-left:8px solid var(--red);padding:10px 14px;border-radius:12px;margin:10px 0}
+.fact{background:#dff7f1;border-left:8px solid var(--mint);padding:10px 14px;border-radius:12px;margin:10px 0}
+.ex{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:10px 0;font-size:21px}.ex .big{font-size:44px}
+.opt{display:block;width:100%;margin:8px 0;text-align:left;background:#fff;border:3px solid #cfdcfb;box-shadow:none}
+.ok{background:#dff7f1;border-left:8px solid var(--mint);padding:10px;border-radius:12px}.no{background:#fff3d6;border-left:8px solid var(--yel);padding:10px;border-radius:12px}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}input[type=text]{font:inherit;padding:10px;border-radius:12px;border:3px solid #cfdcfb;min-width:160px}
+.chip{display:inline-block;margin:4px}table{border-collapse:collapse;width:100%}td,th{border:2px solid #cfdcfb;padding:8px}
+.vid{border:4px dashed var(--blue);border-radius:16px;padding:14px;background:#fff}.vid iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:12px}
+#modal{position:fixed;inset:0;background:#0007;display:none;align-items:center;justify-content:center;z-index:9;padding:12px}#modal>div{background:#fff;border-radius:22px;padding:18px;max-width:640px;max-height:90vh;overflow:auto}
+.cf{position:fixed;top:-40px;font-size:28px;animation:fall 2.6s linear forwards;z-index:20;pointer-events:none}@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+.cert{border:10px double var(--blue);text-align:center;background:#fffbe8;padding:24px;border-radius:12px}
+@media print{header,.nav,.noprint{display:none!important}body{background:#fff}}
+#pet{position:fixed;left:8px;bottom:8px;width:210px;z-index:8;display:flex;flex-direction:column;align-items:flex-start}#pet svg{width:110px;height:110px;cursor:pointer;overflow:visible}
+#bub{background:#fff;border:3px solid var(--blue);border-radius:16px;padding:6px 10px;font-size:16px;margin-bottom:4px}
+#eyes{animation:blink 4.5s infinite;transform-box:fill-box;transform-origin:center}@keyframes blink{0%,95%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+#tail{transform-origin:92px 105px;animation:wag 1.2s ease-in-out infinite alternate}@keyframes wag{to{transform:rotate(18deg)}}
+.hop{animation:hop .6s 2}@keyframes hop{50%{transform:translateY(-24px)}}.sleep #eyes{animation:none;transform:scaleY(.1)}
+.xp{flex-basis:100%;display:flex;gap:10px;align-items:center;font-size:15px}.xp .bar{flex:1;background:#ffffff55;height:10px}.xp .bar i{background:var(--yel);transition:width .6s}
+main{padding-bottom:170px}input[type=range]{width:70px;vertical-align:middle}@media print{#pet{display:none}}
+</style></head><body>
+<header id="hd"></header><main id="app"></main><div id="modal" role="dialog" aria-modal="true"></div>
+<div id=pet><div id=bub aria-live=polite>Hi! I'm Whiskers! Click me! 🐱</div>
+<svg id=catsvg viewBox="0 0 130 125" role=button tabindex=0 aria-label="Whiskers the cat. Click to hear a meow."><g id=tail><path d="M92 105 Q128 100 118 62" stroke="#e08a00" stroke-width=10 fill=none stroke-linecap=round /></g><ellipse cx=62 cy=105 rx=32 ry=18 fill="#f5b301"/><polygon points="30,42 33,10 54,30" fill="#f5b301"/><polygon points="94,42 91,10 70,30" fill="#f5b301"/><polygon points="35,36 36,20 47,31" fill="#ff9db8"/><polygon points="89,36 88,20 77,31" fill="#ff9db8"/><circle cx=62 cy=60 r=36 fill="#ffc933"/><rect x=44 y=92 width=36 height=7 rx=3 fill="#1d4ed8"/><g id=eyes><circle cx=48 cy=56 r=9 fill="#fff"/><circle cx=76 cy=56 r=9 fill="#fff"/><circle class=pp cx=48 cy=56 r=4.5 fill="#14246b"/><circle class=pp cx=76 cy=56 r=4.5 fill="#14246b"/></g><ellipse cx=62 cy=67 rx=4 ry=3 fill="#ff6f91"/><path id=mo d="M54 73 Q62 81 70 73" stroke="#14246b" stroke-width=3 fill=none stroke-linecap=round /><path d="M30 68 L10 64 M30 74 L10 78 M94 68 L114 64 M94 74 L114 78" stroke="#14246b" stroke-width=2 /></svg></div>
+<script>
+/* ===== DATA (edit texts, videos and questions here) =====
+   Markup in examples: [if-clause] {main clause}.  v: YouTube video ID (leave "" for no video).
+   es: Spanish help shown with the "Show in Spanish" button. */
+const LESSONS=[
+{id:1,t:"What is a conditional sentence?",e:"🧩",v:"30RYJPb_q3U",b:[
+{h:"Two parts, one idea",t:"A conditional sentence says “if A happens, B happens.” The part with <b>if</b> is the <span class=if>if-clause</span> (the condition). The other part is the <span class=mc>main clause</span> (the result).",ex:[{en:"[If you win the level], {you get a star}.",es:"Si ganas el nivel, recibes una estrella.",e:"🎮"}]},
+{h:"You can change the order",t:"You can start with either part. The meaning is the same.",ex:[{en:"{We play soccer} [if it is sunny].",es:"Jugamos fútbol si hace sol.",e:"⚽"}],w:"If the if-clause comes first, use a comma (,). If it comes last, do not use a comma."}],
+q:[{t:"mc",q:"In “If it rains, we stay home,” what is the if-clause?",o:["If it rains","we stay home","stay"],a:0,w:"The if-clause is the part that starts with if."},
+{t:"mc",q:"When do we use a comma?",o:["When the if-clause comes first","When the if-clause comes last"],a:0,w:"If it is cold, I wear a jacket. (comma) / I wear a jacket if it is cold. (no comma)"},
+{t:"tf",q:"We play games if we finish our homework.",a:true,w:"Correct: the if-clause is last, so there is no comma."},
+{t:"order",w:["If","you","press","pause,","the","game","stops"],a:"If you press pause, the game stops",es:"Si presionas pausa, el juego se detiene."}]},
+{id:2,t:"Zero Conditional: form and use",e:"🧊",v:"nZdDsHOCzh0",b:[
+{h:"The formula",t:"<span class=if>If / When + present simple</span>, <span class=mc>present simple</span>. We use it for science facts, general truths and habits.",ex:[{en:"[If you heat ice], {it melts}.",es:"Si calientas hielo, se derrite.",e:"🧊"},{en:"[When my phone gets hot], {it slows down}.",es:"Cuando mi celular se calienta, se pone lento.",e:"📱"}]},
+{h:"Negatives and questions",t:"Negative: don't / doesn't. Question: What happens if…?",ex:[{en:"[If I don't sleep well], {I feel tired}.",es:"Si no duermo bien, me siento cansado.",e:"😴"},{en:"What happens [if you mix red and blue]? {You get purple}.",es:"¿Qué pasa si mezclas rojo y azul? Obtienes morado.",e:"🎨"}],w:"Do not use will for general facts: ✗ If you heat ice, it will melt."}],
+q:[{t:"mc",q:"If you ___ water to 100°C, it boils.",o:["heat","will heat","heated"],a:0,w:"Zero conditional uses present simple in both parts."},
+{t:"tf",q:"If it will rain, the grass gets wet.",a:false,w:"We do not use will after if."},
+{t:"fill",q:"If I ___ (not sleep) well, I feel tired.",a:["don't sleep"],w:"I + don't + base verb."},
+{t:"fill",q:"When it is very cold, water ___ (freeze).",a:["freezes"],w:"Water = it, so the verb takes -s."},
+{t:"order",w:["If","you","press","this","button,","the","phone","turns","on"],a:"If you press this button, the phone turns on",es:"Si presionas este botón, el teléfono se enciende."}]},
+{id:3,t:"Zero Conditional: practice and mistakes",e:"🔬",v:"",b:[
+{h:"Watch the -s",t:"With he / she / it, the verb takes -s. In negatives, use doesn't.",ex:[{en:"[If my dog sees a cat], {he barks}.",es:"Si mi perro ve un gato, ladra.",e:"🐶"},{en:"[If it doesn't rain], {plants die}.",es:"Si no llueve, las plantas mueren.",e:"🌵"}],w:"✗ If he heat ice… ✓ If he heats ice…"},
+{h:"With when",t:"When works the same way for habits.",ex:[{en:"[When I'm online], {I talk to my friends}.",es:"Cuando estoy en línea, hablo con mis amigos.",e:"🎧"}],k:"In the zero conditional, if and when are almost the same: both talk about things that always happen."}],
+q:[{t:"fill",q:"If she ___ (not eat) breakfast, she gets hungry.",a:["doesn't eat"],w:"She + doesn't + base verb."},
+{t:"tf",q:"If you heats ice, it melts.",a:false,w:"With you there is no -s: If you heat ice."},
+{t:"mc",q:"Which sentence is correct?",o:["If students study, they will pass always.","When I play online, I talk to my friends.","If I will play online, I talk to friends."],a:1,w:"Use present simple in both parts."},
+{t:"order",w:["When","it","snows,","the","kids","play","outside"],a:"When it snows, the kids play outside",es:"Cuando nieva, los niños juegan afuera."}]},
+{id:4,t:"First Conditional: form and use",e:"🌧️",v:"n3EvPzrWJT0",b:[
+{h:"The formula",t:"<span class=if>If + present simple</span>, <span class=mc>will + base verb</span>. We use it for real future possibilities, promises, warnings and offers.",ex:[{en:"[If it rains], {we will stay home}.",es:"Si llueve, nos quedaremos en casa.",e:"🌧️"},{en:"[If you don't hurry], {you will miss the bus}.",es:"Si no te apuras, perderás el bus.",e:"🚌"},{en:"[If you help me], {I'll buy you a snack}.",es:"Si me ayudas, te compraré una merienda.",e:"🍟"},{en:"Will you come [if I invite you]?",es:"¿Vendrás si te invito?",e:"🎉"}],w:"Do NOT put will after if: ✗ If it will rain. ✓ If it rains."},
+{h:"Think about Spanish",t:"In Spanish we also say “si llueve, nos quedamos” (not “si lloverá”). English works the same way!"}],
+q:[{t:"mc",q:"If it ___ tomorrow, we will cancel the match.",o:["rains","will rain","rained"],a:0,w:"Use present simple after if."},
+{t:"fill",q:"If you study, you ___ (pass) the test.",a:["will pass","'ll pass"],w:"will + base verb."},
+{t:"tf",q:"If I will see her, I will tell her.",a:false,w:"Remove will from the if-clause: If I see her…"},
+{t:"fill",q:"If it rains, we ___ (not play) soccer.",a:["won't play","will not play"],w:"will not = won't."},
+{t:"order",w:["If","you","don't","hurry,","you","will","miss","the","bus"],a:"If you don't hurry, you will miss the bus",es:"Si no te apuras, perderás el bus."}]},
+{id:5,t:"First Conditional: variations",e:"🚀",v:"",b:[
+{h:"Unless",t:"<b>Unless</b> means if … not.",ex:[{en:"[Unless you study], {you won't pass}.",es:"A menos que estudies, no pasarás.",e:"📚"}],w:"✗ Unless you don't study. Unless is already negative."},
+{h:"Can, might, commands",t:"In the main clause you can use can, may, might, should, or a command.",ex:[{en:"[If you finish early], {you can play a game}.",es:"Si terminas temprano, puedes jugar.",e:"🕹️"},{en:"[If it's cloudy], {we might stay home}.",es:"Si está nublado, quizás nos quedemos en casa.",e:"☁️"},{en:"[If you see Ana], {say hi}!",es:"Si ves a Ana, salúdala.",e:"👋"}]}],
+q:[{t:"mc",q:"We will go to the beach ___ it rains.",o:["unless","if","when"],a:0,w:"Unless = if not: we will go unless it rains."},
+{t:"mc",q:"If you see Ana, ___ her hello.",o:["say","will say","saying"],a:0,w:"A command uses the base verb."},
+{t:"tf",q:"Unless you study, you won't pass. = If you don't study, you won't pass.",a:true,w:"They mean the same thing."},
+{t:"tf",q:"Unless you don't hurry, we'll be late.",a:false,w:"Unless is already negative: Unless you hurry…"}]},
+{id:6,t:"Zero vs. First",e:"⚖️",v:"h9FMFu80aRM",b:[
+{h:"Compare them",t:"<table><tr><th></th><th class=if>Zero</th><th class=mc>First</th></tr><tr><td>Form</td><td>if + present, present</td><td>if + present, will + base</td></tr><tr><td>Use</td><td>Always true</td><td>Possible future</td></tr><tr><td>Example</td><td>If you freeze water, it becomes ice.</td><td>If it rains tomorrow, we will stay in.</td></tr></table>",k:"Ask yourself: does it always happen (Zero) or will it happen one time in the future (First)?"}],
+q:[{t:"cls",q:"If you mix blue and yellow, you get green.",a:"Zero",w:"It is a fact: it always happens."},
+{t:"cls",q:"If it rains tomorrow, we will stay in.",a:"First",w:"Tomorrow = a possible future event."},
+{t:"cls",q:"If I get a good grade, I will tell my mom.",a:"First",w:"It is a promise about the future."},
+{t:"cls",q:"If you freeze water, it becomes ice.",a:"Zero",w:"It is a science fact."}]}];
+const CHEAT="<h2>📝 Cheat sheet</h2><p><span class=if>Zero</span>: If + present simple, present simple → facts and habits.<br><i>If you heat ice, it melts.</i></p><p><span class=mc>First</span>: If + present simple, will + base verb → possible future.<br><i>If it rains, we will stay home.</i></p><p><b>Glossary:</b> if-clause = the part with if · main clause = the result · unless = if…not · base verb = verb without -s or -ed · won't = will not.</p>";
+const BADGES={zero:["🧪","Zero Scientist"],fut:["🚀","Bright Future"],hunt:["🔍","Mistake Hunter"],streak:["🔥","5-Answer Streak"],master:["👑","Conditionals Master"],friend:["🐱","Cat's Friend"]};
+const LEVELS=[[0,"Beginner"],[100,"Apprentice"],[300,"Expert"],[600,"Conditionals Master"]];
+const CHEER=["Excellent!","Very good!","That's it!","Great job, keep going!"],HINT=["Almost! Look at the hint:","No problem, that's how we learn:","Good try. Look:"];
+const PTS=10,SECS=60,EXAMN=15;
+/* ===== STATE ===== */
+LESSONS.forEach(l=>l.q.forEach(q=>q.L=l.id));
+const POOL=LESSONS.flatMap(l=>l.q),$=s=>document.querySelector(s),rnd=a=>a[Math.floor(Math.random()*a.length)],shuf=a=>[...a].sort(()=>Math.random()-.5);
+const DEF=()=>({name:"",pts:0,done:{},badges:[],exam:null,notes:[],st:{},time:0,clicks:0,au:{m:.5,s:.7,mute:false}});
+let S=DEF();try{S=Object.assign(DEF(),JSON.parse(localStorage.getItem("cq-en")||"{}"))}catch(e){}
+const save=()=>{try{localStorage.setItem("cq-en",JSON.stringify(S))}catch(e){}};
+const lvl=()=>[...LEVELS].reverse().find(l=>S.pts>=l[0])[1];
+const norm=s=>s.toLowerCase().replace(/[’]/g,"'").replace(/won't/g,"will not").replace(/n't/g," not").replace(/'ll/g," will").replace(/[^a-z ]/g,"").replace(/\s+/g," ").trim();
+const fmt=s=>s.replace(/\[(.+?)\]/g,"<span class=if>$1</span>").replace(/\{(.+?)\}/g,"<span class=mc>$1</span>"),plain=s=>s.replace(/[\[\]{}]/g,"");
+const esc=s=>s.replace(/"/g,"&quot;");
+function say(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="en-US";speechSynthesis.speak(u)}catch(e){}}
+/* ===== AUDIO: Web Audio only, no files. MUSIC = MIDI notes per step (0 = rest); SFX = [frequency, seconds] ===== */
+const MUSIC={menu:{bpm:96,w:"triangle",n:[72,76,79,76,74,77,81,77,72,76,79,84,83,79,76,0]},lesson:{bpm:80,w:"sine",n:[67,0,71,74,72,0,69,72,71,0,67,71,69,0,0,0]},quiz:{bpm:110,w:"triangle",n:[69,72,76,72,71,74,77,74,69,72,76,81,79,76,72,0]},timed:{bpm:170,w:"square",n:[72,76,79,84,79,76,72,67,74,77,81,86,81,77,74,69]}};
+const SFX={click:[[900,.05]],ok:[[660,.1],[880,.18]],bad:[[330,.16],[277,.22]],streak:[[523,.08],[659,.08],[784,.16]],badge:[[784,.1],[988,.1],[1319,.25]],level:[[523,.1],[659,.1],[784,.1],[1047,.3]],fanfare:[[523,.12],[523,.12],[659,.12],[784,.3],[659,.12],[784,.4]],tick:[[1200,.03]]};
+let AC,mg,sg,track,step=0,mt;const mf=n=>440*2**((n-69)/12);
+function ac(){if(!AC)try{AC=new(window.AudioContext||webkitAudioContext)();mg=AC.createGain();sg=AC.createGain();mg.connect(AC.destination);sg.connect(AC.destination);vol();if(track)mus(track,1)}catch(e){}return AC}
+function vol(){if(!AC)return;const m=S.au.mute?0:1;mg.gain.value=m*S.au.m*.25;sg.gain.value=m*S.au.s*.5}
+function tone(f,t,d,w,g){const o=AC.createOscillator(),e=AC.createGain();o.type=w;o.frequency.value=f;e.gain.setValueAtTime(.0001,t);e.gain.exponentialRampToValueAtTime(1,t+.02);e.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(e);e.connect(g);o.start(t);o.stop(t+d+.05)}
+function sfx(k){if(!ac())return;let t=AC.currentTime;if(k=="meow"){const o=AC.createOscillator(),e=AC.createGain();o.type="sawtooth";o.frequency.setValueAtTime(500,t);o.frequency.linearRampToValueAtTime(900,t+.15);o.frequency.linearRampToValueAtTime(450,t+.5);e.gain.setValueAtTime(.4,t);e.gain.linearRampToValueAtTime(0,t+.55);o.connect(e);e.connect(sg);o.start(t);o.stop(t+.6);return}(SFX[k]||[]).forEach(([f,d])=>{tone(f,t,d,"triangle",sg);t+=d})}
+function mus(k,force){if(k==track&&!force)return;track=k;clearTimeout(mt);step=0;if(!AC)return;const M=MUSIC[k],d=60/M.bpm/2;(function loop(){const n=M.n[step++%M.n.length];if(n&&!S.au.mute)tone(mf(n),AC.currentTime,d*1.6,M.w,mg);mt=setTimeout(loop,d*1000)})()}
+const beep=f=>sfx(f>400?"ok":"bad");
+document.addEventListener("pointerdown",e=>{ac();if(AC&&AC.state=="suspended")AC.resume();if(e.target.closest&&e.target.closest("button"))sfx("click")});
+/* ===== MASCOT: Whiskers the cat ===== */
+const MOUTH={idle:"M54 73 Q62 81 70 73",happy:"M50 70 Q62 88 74 70",think:"M54 78 Q62 70 70 78"};
+const TIPS=["Tip: never use will right after if!","Zero = facts. First = future.","Unless = if + not.","You're doing great, keep going!"];
+let pt,last=Date.now();
+function mood(m,hop){$("#pet").className=m=="sleep"?"sleep":"";$("#mo").setAttribute("d",MOUTH[m]||MOUTH.idle);if(hop){const v=$("#catsvg");v.classList.remove("hop");void v.getBoundingClientRect();v.classList.add("hop")}}
+function tip(t,m,hop){last=Date.now();$("#bub").textContent=t;mood(m||"idle",hop);clearTimeout(pt);pt=setTimeout(()=>{mood("idle");$("#bub").textContent=rnd(TIPS)},5000)}
+$("#catsvg").onclick=()=>{sfx("meow");S.clicks++;if(S.clicks>=10)give("friend");save();tip("Meow! I'm Whiskers, your guide! 🐱","happy",1)};
+$("#catsvg").onkeydown=e=>{if(e.key=="Enter")$("#catsvg").onclick()};
+addEventListener("mousemove",e=>{const r=$("#catsvg").getBoundingClientRect(),c=v=>Math.max(-1,Math.min(1,v/300));document.querySelectorAll(".pp").forEach(p=>p.setAttribute("transform",`translate(${c(e.clientX-r.x-r.width/2)*3.5} ${c(e.clientY-r.y-r.height/2)*3.5})`));last=Date.now();if($("#pet").className=="sleep")mood("idle")});
+addEventListener("keydown",()=>{last=Date.now()});
+setInterval(()=>{if(Date.now()-last>45000&&$("#pet").className!="sleep"){mood("sleep");$("#bub").textContent="Zzz… click me to wake me up! 💤"}},5000);
+function addp(n){const b=lvl();S.pts+=n;if(lvl()!=b){sfx("level");tip("Level up! You are now "+lvl()+"! 🎉","happy",1)}}
+function confetti(){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;for(let i=0;i<30;i++){const d=document.createElement("div");d.className="cf";d.textContent=rnd(["🎉","⭐","✨","🔵","🟡"]);d.style.left=Math.random()*100+"vw";d.style.animationDelay=Math.random()+"s";document.body.appendChild(d);setTimeout(()=>d.remove(),4000)}}
+function give(k){if(!S.badges.includes(k)){S.badges.push(k);save();sfx("badge");tip("New badge: "+BADGES[k][0]+" "+BADGES[k][1]+"!","happy",1)}}
+function hdr(){const th=LEVELS.find(l=>l[0]>S.pts),pv=[...LEVELS].reverse().find(l=>S.pts>=l[0]),xp=th?(S.pts-pv[0])/(th[0]-pv[0])*100:100,tot=Object.values(S.done).reduce((a,b)=>a+b,0)+(S.exam?3:0),cp=Math.round(tot/21*100);
+$("#hd").innerHTML=`<b>🐱 Conditionals Quest</b><span>${S.name?S.name+" · ":""}${lvl()} · ⭐ ${S.pts}</span><span><button class=b2 onclick="info()" aria-label="Cheat sheet and glossary">📝</button> <button class=b2 onclick="S.au.mute=!S.au.mute;vol();save();hdr()" aria-label="Mute all sound">${S.au.mute?"🔇":"🔊"}</button> <label>🎵<input type=range min=0 max=1 step=.1 value=${S.au.m} aria-label="Music volume" oninput="S.au.m=+this.value;vol()" onchange="save()"></label> <label>🔔<input type=range min=0 max=1 step=.1 value=${S.au.s} aria-label="Sound effects volume" oninput="S.au.s=+this.value;vol()" onchange="save()"></label></span><div class=xp>Course ${cp}%<div class=bar><i style="width:${cp}%"></i></div>XP ${S.pts}${th?"/"+th[0]:""}<div class=bar><i style="width:${xp}%"></i></div></div>`}
+function info(){const m=$("#modal");m.innerHTML="<div>"+CHEAT+"<button onclick=\"$('#modal').style.display='none'\">Close</button> <button class=b2 onclick=\"reset()\">Reset progress</button></div>";m.style.display="flex"}
+/* Videos: each iframe is created only when it scrolls into view, with autoplay + mute (browsers only allow muted autoplay).
+   VIDEO_REFERRER is sent to YouTube when the file is opened from disk (file://), where browsers send no referrer. */
+const VIDEO_REFERRER="https://www.youtube.com/";
+function watchVideos(){if(!window.IntersectionObserver)return;const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const b=e.target;io.unobserve(b);const o=location.protocol.startsWith("http")?location.origin:null,p=new URLSearchParams({autoplay:1,mute:1,playsinline:1,rel:0,modestbranding:1,widget_referrer:o||VIDEO_REFERRER});if(o)p.set("origin",o);b.innerHTML=`<iframe src="https://www.youtube.com/embed/${b.dataset.v}?${p}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="Lesson video"></iframe>`}),{threshold:.5});document.querySelectorAll("[data-v]").forEach(d=>io.observe(d))}
+function reset(){$("#modal").innerHTML="<div><h2>Reset everything?</h2><p>All your points, stars, badges and notebook will be deleted. This cannot be undone.</p><button onclick=\"doReset()\">Yes, reset</button> <button class=b2 onclick=\"info()\">Cancel</button></div>"}
+function doReset(){try{localStorage.removeItem("cq-en")}catch(e){}S=DEF();$("#modal").style.display="none";start()}
+function improve(){mus("lesson");const open=S.notes.filter(x=>!x.fixed),rp={};S.notes.forEach(x=>rp[x.why]=(rp[x.why]||0)+x.c);const top=Object.entries(rp).sort((a,b)=>b[1]-a[1]).slice(0,3);
+set(`<div class=card><span class=big>🛠️</span><h1>Things to Improve</h1>`+LESSONS.map(l=>{const t=S.st[l.id],p=t?Math.round(t.ok/t.n*100):0;return `<p>${l.e} ${l.t}: <b>${t?p+"%":"not practiced"}</b>${t&&p<70?" → Review Lesson "+l.id:""}<div class=bar><i style="width:${p}%"></i></div></p>`}).join("")+`</div><div class=card><h2>Most repeated mistakes</h2>${top.length?top.map(x=>`<p>⚠️ ${x[0]} (${x[1]}×)</p>`).join(""):"<p>No mistakes yet. Great!</p>"}</div><div class=card><h2>📓 My notebook</h2>${S.notes.length?S.notes.map(x=>`<p>${x.fixed?"✅":"❌"} <b>${x.q}</b><br>You wrote: ${x.mine||"—"} · Correct: ${x.ans}<br><small>${x.why} (Lesson ${x.L})</small></p>`).join(""):"<p>Empty for now.</p>"}${open.length?`<button onclick="redo()">Practice my mistakes 🔁</button>`:""}</div>`+nav("map()"))}
+function redo(){const ks=S.notes.filter(x=>!x.fixed).map(x=>x.k);run(shuf(POOL.filter(q=>ks.includes(q.q||q.a))),{back:"improve()",end:(ok,n,bad)=>result("Mistakes practice",ok,n,bad,"improve()")})}
+const nav=(back,next)=>`<div class=nav><button class=b2 onclick="${back}">⬅ Back</button><button class=b2 onclick="map()">🏠 Home</button>${next||""}</div>`;
+const set=h=>{$("#app").innerHTML=h;hdr();scrollTo(0,0)};
+/* ===== SCREENS ===== */
+function start(){mus("menu");set(`<div class=card style="text-align:center"><div class=big>🐱</div><h1>Conditionals Quest</h1><p>Hi! I'm Whiskers. Welcome to this adventure made for UNAD students. We will learn the Zero and First Conditional by playing.</p><p><label for=nm>What's your name?</label><br><input type=text id=nm maxlength=30 placeholder="Your name"></p><button style="font-size:24px;min-height:60px" onclick="begin()">Let's start!</button></div>`)}
+function begin(){S.name=$("#nm").value.trim()||"Explorer";save();map()}
+function map(){if(!S.name)return start();mus("menu");const n=Object.keys(S.done).length;
+set(`<div class=card><span class=big>🐱</span> Hi, ${S.name}! Choose your mission. Lessons completed: ${n}/6</div><div class=grid>`+LESSONS.map(l=>{const st=S.done[l.id]||0,lock=l.id>1&&!S.done[l.id-1];return `<button class=lc ${lock?"disabled":""} onclick="lesson(${l.id})"><span class=big>${lock?"🔒":l.e}</span><br><b>${l.id}. ${l.t}</b><br>${"⭐".repeat(st)}${"☆".repeat(3-st)}<div class=bar><i style="width:${st/3*100}%"></i></div></button>`}).join("")+
+`<button class=lc onclick="game('timed')"><span class=big>⏱️</span><br><b>Beat the Clock</b><br>${SECS} seconds</button><button class=lc onclick="game('build')"><span class=big>🧩</span><br><b>Build the Sentence</b></button><button class=lc onclick="improve()"><span class=big>🛠️</span><br><b>Things to Improve</b><br>${S.notes.filter(x=>!x.fixed).length} to fix</button><button class=lc ${n<6?"disabled":""} onclick="exam()"><span class=big>${n<6?"🔒":"🏆"}</span><br><b>Final Test</b><br>${n<6?"Complete all 6 lessons":EXAMN+" questions"}</button></div>`)}
+function lesson(id){const l=LESSONS[id-1];mus("lesson");
+set(`<div class=card><span class=big>${l.e}</span><h1>${l.t}</h1><div class=bar><i style="width:75%"></i></div><small>✅ Explanation · ✅ Examples · ${l.v?"✅ Video · ":""}➡ Practice</small><br><button class=b2 onclick="say(this.dataset.t)" data-t="${esc(l.b.map(b=>b.h||"").join(". "))}">🔊 Listen to the topics</button></div>`+
+l.b.map(b=>`<div class=card>${b.h?"<h2>"+b.h+"</h2>":""}<p>${b.t}</p>`+(b.ex||[]).map(x=>`<div class=ex><span class=big role=img aria-label="illustration">${x.e}</span><span>${fmt(x.en)}</span><button class=b2 aria-label="Listen" onclick="say(this.dataset.t)" data-t="${esc(plain(x.en))}">🔊</button><button class=b2 onclick="this.nextElementSibling.hidden=!this.nextElementSibling.hidden">Show in Spanish</button><i hidden>${x.es}</i></div>`).join("")+(b.w?`<div class=warn>⚠️ <b>Careful:</b> ${b.w}</div>`:"")+(b.k?`<div class=fact>💡 <b>Did you know...?</b> ${b.k}</div>`:"")+"</div>").join("")+
+`${l.v?`<div class="card vid" data-v="${l.v}" role="region" aria-label="Lesson video" style="min-height:200px;text-align:center"><div class=big>🎬</div></div>`:""}`+
+nav("map()",`<button onclick="practice(${id})">Let's practice! ✏️</button>`));watchVideos()}
+/* ===== QUESTION ENGINE ===== */
+function run(qs,o){mus(o.timer?"timed":"quiz");let i=0,ok=0,n=0,bad=[],t=o.timer,iv,over=0,sk=0;
+const fin=()=>{if(over)return;over=1;clearInterval(iv);o.end(ok,n,bad)};
+if(t)iv=setInterval(()=>{t--;if(t<=10&&t>0)sfx("tick");const e=$("#tm");if(e)e.textContent=t;if(t<=0)fin()},1000);
+function show(){if(over)return;if(i>=qs.length)return fin();const q=qs[i];
+set(`<div class=card><div>Question ${i+1}${o.timer?"":" of "+qs.length} ${o.timer?" ⏱️ <b id=tm>"+t+"</b>s":""} · 🔥 streak ${sk}</div>${o.timer?"":`<div class=bar><i style="width:${i/qs.length*100}%"></i></div>`}<h2 id=pr></h2><div id=an></div><div id=fb aria-live=polite></div></div>`+nav(o.back));
+const P=$("#pr"),A=$("#an");
+if(q.t=="mc"){P.textContent=q.q;A.innerHTML=q.o.map((x,k)=>`<button class=opt onclick="_a(${k==q.a},${k})">${x}</button>`).join("")}
+if(q.t=="tf"){P.textContent="Is this sentence correct?";A.innerHTML=`<p class=ex>${q.q}</p><button onclick="_a(${q.a},'Yes')">✅ Yes</button> <button class=b2 onclick="_a(${!q.a},'No')">❌ No</button>`}
+if(q.t=="cls"){P.textContent="Zero or First conditional?";A.innerHTML=`<p class=ex>${q.q}</p><button style="background:#dbe7ff" onclick="_a(${q.a=="Zero"},'Zero')">Zero</button> <button onclick="_a(${q.a=="First"},'First')">First</button>`}
+if(q.t=="fill"){P.textContent="Type the verb:";A.innerHTML=`<p class=ex>${q.q.replace("___","<input type=text id=fi size=12 aria-label=answer>")}</p><button id=ck>Check</button>`;const chk=()=>_a(q.a.some(x=>norm(x)==norm($("#fi").value)),$("#fi").value);$("#ck").onclick=chk;$("#fi").addEventListener("keydown",e=>{if(e.key=="Enter")chk()})}
+if(q.t=="order"){P.textContent="Put the words in order:";window._ws=[];const bank=shuf(q.w.map((w,k)=>[w,k]));
+const draw=()=>{A.innerHTML=`<p class=ex>Hint (Spanish): ${q.es}</p><div class=card style="min-height:60px">${_ws.map(k=>q.w[k]).join(" ")||"…"}</div><div>${bank.map(b=>`<button class="b2 chip" ${_ws.includes(b[1])?"disabled":""} onclick="_ws.push(${b[1]});_dr()">${b[0]}</button>`).join("")}</div><button onclick="_ws=[];_dr()" class=b2>Clear</button> <button id=ck>Check</button>`;$("#ck").onclick=()=>_a(norm(_ws.map(k=>q.w[k]).join(" "))==norm(q.a),_ws.map(k=>q.w[k]).join(" "))};
+window._dr=draw;draw()}
+window._a=(c,m)=>{if(!$("#an"))return;const key=q.q||q.a,why=Array.isArray(q.w)?"Check the word order and the comma.":q.w,exp=q.t=="order"?"Answer: "+q.a:q.t=="fill"?"Answer: "+q.a[0]+". "+why:why;
+if(q.t=="mc"&&m!==undefined)m=q.o[m];
+$("#an").querySelectorAll("button,input").forEach(b=>b.disabled=true);n++;const st=S.st[q.L]=S.st[q.L]||{ok:0,n:0};st.n++;
+if(c){st.ok++;ok++;sk++;addp(PTS+Math.min(sk,5)*2);beep(660);S.notes.forEach(x=>{if(x.k==key)x.fixed=true});if(sk==5){give("streak");sfx("streak")}save();hdr();tip(rnd(CHEER),"happy",1);$("#fb").innerHTML=`<div class=ok>🎉 ${rnd(CHEER)} ${exp}</div><div class=nav><button id=nx>Next ➡</button></div>`}
+else{sk=0;bad.push(q.L);beep(220);const nt=S.notes.find(x=>x.k==key);if(nt){nt.mine=m;nt.fixed=false;nt.c++}else S.notes.push({k:key,q:q.q||"Order: "+q.w.join(" / "),mine:m,ans:q.t=="fill"?q.a[0]:q.t=="order"?q.a:q.t=="mc"?q.o[q.a]:q.t=="tf"?(q.a?"Yes":"No"):q.a,why:why,L:q.L,fixed:false,c:1});save();tip(why,"think");$("#fb").innerHTML=`<div class=no>💡 ${rnd(HINT)} ${exp}</div><div class=nav><button class=b2 id=rt>Try again 🔁</button><button id=nx>Next ➡</button></div>`;$("#rt").onclick=()=>{n--;show()}}
+$("#nx").onclick=()=>{i++;show()};$("#nx").focus()}}
+show()}
+function result(title,ok,n,bad,back,extra){const topics=[...new Set(bad)].map(id=>LESSONS[id-1].t);
+set(`<div class=card style="text-align:center"><div class=big>${ok/Math.max(n,1)>=.6?"🏆":"💪"}</div><h1>${title}</h1><p>Correct answers: <b>${ok}/${n}</b> · Total score: ⭐ ${S.pts} · Level: ${lvl()}</p>${extra||""}<p>Badges: ${S.badges.map(k=>BADGES[k][0]+" "+BADGES[k][1]).join(" · ")||"None yet, keep playing!"}</p><p>Lessons completed: ${Object.keys(S.done).length}/6 · Study time: ${Math.round((S.time||0)/60)} min</p>${topics.length?"<div class=warn>📚 Review: "+topics.join(", ")+"</div>":"<div class=ok>Nothing to review!</div>"}</div>`+nav(back,`<button onclick="${back}">🔁 Play again</button><button class=b2 onclick="improve()">🛠️ Things to improve</button>`))}
+function practice(id){const l=LESSONS[id-1];run(shuf(l.q),{back:`lesson(${id})`,end:(ok,n,bad)=>{const p=ok/n,st=p>=.9?3:p>=.6?2:p>=.5?1:0;let ex;
+if(st){S.done[id]=Math.max(S.done[id]||0,st);S.pts+=st*10;if(id==3)give("zero");if(id==5)give("fut");save();confetti();sfx("fanfare");tip("Lesson complete! "+rnd(CHEER),"happy",1);ex=`<p class=big>${"⭐".repeat(st)}</p><p>Lesson completed!</p>`}else ex="<p>Review the lesson and try again. You can do it!</p>";
+result(l.t,ok,n,bad,`lesson(${id})`,ex)}})}
+function game(m){if(m=="timed")run(shuf([...POOL,...POOL]).filter(q=>q.t!="order"),{timer:SECS,back:"map()",end:(ok,n,bad)=>result("Time's up!",ok,n,bad,"map()")});
+else run(shuf(POOL.filter(q=>q.t=="order")),{back:"map()",end:(ok,n,bad)=>result("Build the Sentence",ok,n,bad,"map()")})}
+function exam(){run(shuf(POOL).slice(0,EXAMN),{back:"map()",end:(ok,n,bad)=>{S.exam=Math.max(S.exam||0,ok);if(ok>=12)give("hunt");if(ok>=14)give("master");save();confetti();sfx("fanfare");
+result("Final Test",ok,n,bad,"map()",ok/n>=.6?`<div class=cert><h2>🎓 Mission accomplished</h2><p>Certificate awarded to</p><h1>${S.name}</h1><p>for completing Conditionals Quest (Zero and First Conditional)<br>Score: ${ok}/${n} · ${new Date().toLocaleDateString("en-US")}</p></div><p class=noprint><button onclick="print()">🖨️ Print / save as PDF</button></p>`:"<p>You need 9/15 for the certificate. Review and try again!</p>")}})}
+document.addEventListener("keydown",e=>{if(e.key=="Escape")$("#modal").style.display="none"});
+setInterval(()=>{if(!document.hidden){S.time=(S.time||0)+10;save()}},10000);
+S.name?map():start();
+</script></body></html>
